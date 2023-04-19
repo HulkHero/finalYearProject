@@ -5,17 +5,15 @@ import theme from "./Theme";
 import { ThemeProvider } from '@mui/material';
 import Logs from './components/Logs';
 import NoteState from './context/noteContext';
+import { Grid } from '@mui/material';
 function App() {
   return (
 
     <ThemeProvider theme={theme}>
-      <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-        <HomeData></HomeData>
-        <Logs></Logs>
-      </div>
-      {/* </div>
-        <Actions></Actions>
-      </div> */}
+      <Grid container sx={{}} direction="row" >
+        <Grid item xs={8} sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItem: "center" }} ><HomeData></HomeData></Grid>
+        <Grid item xs={4} sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", mt: "20px" }}><Logs></Logs></Grid>
+      </Grid>
     </ThemeProvider>
 
   );

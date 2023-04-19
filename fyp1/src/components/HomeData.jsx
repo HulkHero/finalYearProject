@@ -103,18 +103,18 @@ const HomeData = () => {
   return (
     <>
    
-    <div style={{display:'flex',flexDirection:'column'}}>
+    <div style={{display:'flex',flexDirection:'column',justifyContent:"center"}}>
     
     <LoadingButton    
         loading={sloading}
         loadingPosition="end"
         endIcon={<KeyboardArrowRightIcon />} 
         variant="contained" onClick={()=>{handleStart()}} color="primary" style={{margin:"10px"}}>Start</LoadingButton>
-    <Button 
+    <LoadingButton 
      loading={rloading}
      loadingPosition="end"
      endIcon={<RestartAltIcon />} 
-    variant="contained" color="error" onClick={()=>{handleReset()}} style={{margin:"10px"}}>Reset</Button>
+    variant="contained" color="error" onClick={()=>{handleReset()}} style={{margin:"10px"}}>Reset</LoadingButton>
     </div>
    
 <Modal

@@ -23,10 +23,10 @@ const Logs = () => {
         <Typography variant="h5" component="h5" sx={{textAlign:"center"}}>Logs</Typography>
         <Divider></Divider>
          {a.messege.map((item,index)=>(
-              <>
+              <div>
              <Typography  key={index} variant="h6" component="h6" sx={{padding:"3px",fontWeight:"300"}}>{item}</Typography>
                <Divider key={index+10}></Divider>
-               </>
+               </div>
          ))}
          </Box>
     </Paper>

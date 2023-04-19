@@ -47,7 +47,7 @@ const DumyChart = () => {
     return (<ResponsiveLine
         data={data1}
         colors={{ scheme: 'category10' }}
-        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+        margin={{ top: 50, right: 80, bottom: 50, left: 60 }}
         xScale={{ type: 'linear', min: '0', max: '10' }}
         yScale={{
             type: 'linear',
