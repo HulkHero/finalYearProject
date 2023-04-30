@@ -15,39 +15,39 @@ const arr = [];
 const voltage = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const current = [1, 1, 0.98, 0.95, 0.84, 0.6, 0.2, 0, 0, 0, 0];
 port.on('error', function (err) { console.log('error', err.message); })
-parser.once('data', (data) => {
+parser.on('data', (data) => {
     console.log("first call", data);
 
     if (data == "s") {
-
         port.write("g,");
-        parser.once('data', (data) => {
-            console.log("in data stm secon call", data);
-            if (data == "c") {
-                current.forEach((element) => {
-                    port.write(element.toString());
-                    port.write(",");
-                    console.log("in  stm", element.toString());
-                });
-                parser.once('data', (data) => {
-                    console.log("in data stm third call", data);
-                    if (data == "v") {
-                        console.log("in data v");
-                        voltage.forEach((element) => {
-                            port.write(element.toString());
-                            port.write(",");
-                            console.log("in  stm", element.toString());
-                        });
-                    }
-                })
-            }
+        port.write("i,");
+    }
+    if (data == "v") {
 
+        console.log("in data v");
+        voltage.forEach((element) => {
+            port.write(element.toString());
+            port.write(",");
+            console.log("in  stm", element.toString());
+        });
 
-        })
 
     }
+    if (data == "c") {
+        current.forEach((element) => {
+            port.write(element.toString());
+            port.write(",");
+            console.log("in  stm", element.toString());
+        });
+
+    }
+
+
+})
+
+
     // uartData.push(parseFloat(data));
     // console.log(typeof (uartData), uartData);
-}
-)
+
+
 

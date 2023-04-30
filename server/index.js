@@ -43,6 +43,14 @@ const power = [];
 var flag = 0;
 var done = false;
 
+/*
+ node send s -> gets g
+                gets i
+ node send c -> gets current
+    node send v -> gets voltage
+
+*/
+
 const dataHandler = (data, res) => {
     console.log("data", data);
     //console.log("res", res);
@@ -66,10 +74,15 @@ const dataHandler = (data, res) => {
     }
     if (data == "g") {
         io.emit('messege', "connected");
+
+
+
+    }
+    if (data == "i") {
+        io.emit('messege', "irradiance 1000");
         port.write("c,");
         io.emit('messege', "reading Current");
         flag = 1;
-
     }
     if (flag == 3) {
         for (var i = 0; i < c.length; i++) {

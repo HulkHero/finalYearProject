@@ -3,13 +3,10 @@ import { useState } from "react";
 import NoteContext from "./noteContext";
 
 const NoteState = (props) => {
-    const [token, setToken] = useState("");
 
-    const [id, setId] = useState();
-    const [creatername, setcreatername] = useState("")
 
     const [messege, setMessege] = useState([]);
-
+    const [data, setData] = useState(null)
     const reset = () => {
         setMessege([]);
     }
@@ -19,7 +16,9 @@ const NoteState = (props) => {
 
 
     return (
-        <NoteContext.Provider value={{ token, setToken, id, setId, creatername, setcreatername, reset, messege, setMessege, }}>{props.children}</NoteContext.Provider>
+        <NoteContext.Provider value={{ reset, messege, setMessege, data, setData }}>
+            {props.children}
+        </NoteContext.Provider>
     )
 
 }

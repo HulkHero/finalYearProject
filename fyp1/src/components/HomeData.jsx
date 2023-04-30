@@ -49,7 +49,7 @@ const HomeData = () => {
       a.reset();
       axios.get('http://localhost:4000/voltage').then(res => {
         console.log(res.data)
-        setData([
+        a.setData([
           {
             "id": "MPP",
             "color": "magenta",
@@ -134,9 +134,9 @@ const HomeData = () => {
   </Paper>
 </Modal>
     <div style={{height:"300px",width:"600px"}}>
-    {data?
+    {a.data?
       <div style={{height:"300px",width:"600px"}} >
-    <LineChart data={data}></LineChart>
+    <LineChart data={a.data}></LineChart>
     </div>
     :<div style={{height:"300px",width:"600px"}}><DumyChart></DumyChart></div>}
     </div>

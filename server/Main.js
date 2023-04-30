@@ -7,21 +7,35 @@ const { ReadlineParser } = require('@serialport/parser-readline')
 // uart
 //const Readline = require('@serialport/parser-readline')
 const { ByteLengthParser } = require('@serialport/parser-byte-length')
-const port = new SerialPort({ path: "COM1", baudRate: 115200 });
-
-const parser = port.pipe(new ReadlineParser({ delimiter: ',' || '\r\n' }))
-port.open((err) => { if (err) { console.log("open3"); } else { console.log("open1") } })
-const arr = [];
-
-// port.on('error', function (err) { console.log('error', err.message); })
-// parser.on('data', (data) => {
-//     console.log(data);
-//     arr.push(parseInt(data));
-//     // uartData.push(parseFloat(data));
-//     // console.log(typeof (uartData), uartData);
-// }
-// )
+var port = new SerialPort({ path: "COM1", baudRate: 115200 });
 var open = false;
+port.on('open', () => { open = true; console.log("open"); })
+
+
+console.log("port ", port)
+const parser = port.pipe(new ReadlineParser({ delimiter: ',' || '\r\n' }))
+//port.open((err) => { if (err) { console.log("open3"); } else { console.log("open1") } })
+const arr = [];
+port.on('error', function (err) { console.log('error', err.message); open = false; })
+function pollFunction() {
+    console.log("polling")
+    if (open == true) {
+        clearInterval(pollingInterval);
+    }
+    SerialPort.list().then((ports) => {
+        console.log("ports", ports);
+        const isConnected = ports.some((port) => port.path === 'COM1');
+        console.log(`Port Com1 is ${isConnected ? 'connected' : 'disconnected'}`);
+        console.log("open", open);
+    }).catch((err) => {
+        console.log('Error polling serial ports:', err.message);
+    });
+
+}
+
+// Set the polling interval using setInterval()
+const pollingInterval = setInterval(pollFunction, 10000); // Poll every 10 second (1000 ms)
+
 let uart = {
 
     port: this.port,
