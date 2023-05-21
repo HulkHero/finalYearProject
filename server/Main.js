@@ -9,7 +9,7 @@ const { ReadlineParser } = require('@serialport/parser-readline')
 const { ByteLengthParser } = require('@serialport/parser-byte-length')
 var port = new SerialPort({ path: "COM1", baudRate: 115200 });
 var open = false;
-port.on('open', () => { open = true; console.log("open"); })
+port.on('open', () => { open = true; console.log("open111"); })
 
 
 console.log("port ", port)
@@ -26,6 +26,7 @@ function pollFunction() {
         console.log("ports", ports);
         const isConnected = ports.some((port) => port.path === 'COM1');
         console.log(`Port Com1 is ${isConnected ? 'connected' : 'disconnected'}`);
+        isConnected ? open = true : open = false;
         console.log("open", open);
     }).catch((err) => {
         console.log('Error polling serial ports:', err.message);

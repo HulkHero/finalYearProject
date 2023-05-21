@@ -1,5 +1,7 @@
 console.log("in mCom.js");
-
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 
 const { SerialPort } = require('serialport');
@@ -12,7 +14,7 @@ const port = new SerialPort({ path: "COM2", baudRate: 115200 });
 const parser = port.pipe(new ReadlineParser({ delimiter: ',' || '\r\n' }))
 port.open((err) => { if (err) { console.log("open3"); } else { console.log("open1") } })
 const arr = [];
-const voltage = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const voltage = [0, 1, 2, 3, 4, 4.5, 5, 5.5, 6, 7, 8];
 const current = [1, 1, 0.98, 0.95, 0.84, 0.6, 0.2, 0, 0, 0, 0];
 port.on('error', function (err) { console.log('error', err.message); })
 parser.on('data', (data) => {
@@ -20,6 +22,7 @@ parser.on('data', (data) => {
 
     if (data == "s") {
         port.write("g,");
+        sleep(1000);
         port.write("i,");
     }
     if (data == "v") {

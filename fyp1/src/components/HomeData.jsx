@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useContext} from 'react'
+import React,{useState,useEffect,useContext,useRef} from 'react'
 import axios from 'axios'
 import LineChart from './LineChart'
 import { Button ,Modal,Box,Typography,Paper} from '@mui/material'
@@ -9,6 +9,8 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import LoadingButton from '@mui/lab/LoadingButton';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import SaveAltRoundedIcon from '@mui/icons-material/SaveAltRounded';
+import { svgToPdf } from "./utils";
 const socket=io("http://localhost:4000")
 
 const style = {
@@ -26,7 +28,13 @@ const style = {
   minHeight:"150px",
 };
 const HomeData = () => {
+  const source = axios.CancelToken.source();
     const a=useContext(NoteContext);
+
+    const containerRef = useRef();
+
+    const handleExport = () => svgToPdf(containerRef.current);
+  
     const [sloading, setSloading] = useState(false)
     const [rloading, setRloading] = useState(false)
     const [data,setData] = useState(null)
@@ -47,7 +55,7 @@ const HomeData = () => {
     const handleStart=()=>{
       setSloading(true)
       a.reset();
-      axios.get('http://localhost:4000/voltage').then(res => {
+      axios.get('http://localhost:4000/voltage',{cancelToken:source.token}).then(res => {
         console.log(res.data)
         a.setData([
           {
@@ -83,6 +91,7 @@ const HomeData = () => {
     }
 
     const handleReset=()=>{
+      source.cancel("Operation canceled by the user."); 
       setRloading(true)
       axios.get("http://localhost:4000/reset").then(res=>{
         console.log(res.data)
@@ -110,6 +119,8 @@ const HomeData = () => {
         loadingPosition="end"
         endIcon={<KeyboardArrowRightIcon />} 
         variant="contained" onClick={()=>{handleStart()}} color="primary" style={{margin:"10px"}}>Start</LoadingButton>
+ 
+      <Button variant="contained" style={{margin:"10px"}} onClick={handleExport} endIcon={<SaveAltRoundedIcon></SaveAltRoundedIcon>}>PDF</Button>
     <LoadingButton 
      loading={rloading}
      loadingPosition="end"
@@ -135,7 +146,7 @@ const HomeData = () => {
 </Modal>
     <div style={{height:"300px",width:"600px"}}>
     {a.data?
-      <div style={{height:"300px",width:"600px"}} >
+      <div style={{height:"300px",width:"600px"}} ref={containerRef} >
     <LineChart data={a.data}></LineChart>
     </div>
     :<div style={{height:"300px",width:"600px"}}><DumyChart></DumyChart></div>}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 
 
 import { ResponsiveLine } from '@nivo/line'
@@ -46,6 +46,7 @@ const DumyChart = () => {
     console.log("data1", data1)
     return (<ResponsiveLine
         data={data1}
+
         colors={{ scheme: 'category10' }}
         margin={{ top: 50, right: 80, bottom: 50, left: 60 }}
         xScale={{ type: 'linear', min: '0', max: '10' }}
@@ -111,6 +112,7 @@ const DumyChart = () => {
             }
         ]}
     />
+
     )
 }
 export default DumyChart;

@@ -123,6 +123,7 @@ const dataHandler = (data, res) => {
 
 app.get("/voltage", async (req, res) => {
     parser.removeAllListeners("data");
+    console.log("start");
     power.length = 0;
     c.length = 0;
     v.length = 0;
@@ -159,8 +160,8 @@ app.get("/reset", (rek, res) => {
     console.log("start");
 
 
-    port.removeAllListeners("data");
-    parser.removeAllListeners("data");
+
+
 
     // Main.start();
 

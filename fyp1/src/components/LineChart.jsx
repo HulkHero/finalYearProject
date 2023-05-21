@@ -40,14 +40,15 @@ const data1=[{
 }]
 
 
-const LineChart = ({data}) => {
+const LineChart = ({data,forwardRef}) => {
     console.log("data",data)
     console.log("data1",data1)
    return( <ResponsiveLine
         data={data}
+        ref={forwardRef}
         colors={{ scheme: 'category10' }}
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-        xScale={{ type: 'linear' ,min: '0',max: '10'}}
+        xScale={{ type: 'linear' ,min: '0',max: '12',}}
         yScale={{
             type: 'linear',
             min: '0',
@@ -56,6 +57,7 @@ const LineChart = ({data}) => {
             reverse: false
         }}
         yFormat=" >-.2f"
+        xFormat=" >-.1f"
         axisTop={null}
         axisRight={null}
         axisBottom={{
