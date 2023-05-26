@@ -6,8 +6,82 @@
 int a=5;
 char  awien='a';
 
+enum state cState=idle;
+
+float current[1000];;
+float voltage[1000]; 
+float dumyCurrent[10];
+float dumyVoltage[10];
+char carray[4];
 int c1;
 int c2;
+
+void waitingToStart(){
+  while((USART1->SR & 0x20) == 0);// wait till RXNE is 1
+  uint8_t c =USART1 ->DR;
+  if(c==0x73){   // recieved s  start
+        CONSOLE("g,");
+       cState=irradiance ;
+  }  
+  return;
+}
+
+void irradiance1000(){
+  
+  delay_us(1000000);
+  /*
+  
+     enter your code here
+    
+    */
+  CONSOLE("i,");
+  cState=sensors;
+}
+
+void readingSensorData(){
+   
+  
+  
+  
+  
+  
+  
+  cState=uart;
+}
+
+void sendingSensorData(){
+
+  float dumyVoltage[11]={0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+  float dumyCurrent[11]= {1, 1, 0.98, 0.95, 0.84, 0.6, 0.2, 0, 0, 0, 0};
+      while((USART1->SR & 0x20) == 0);// wait till RXNE is 1 c recived
+  uint8_t c =USART1 ->DR;
+  if(c==0x63){
+   for(int i=0;i<1000;i++){
+    sprintf(carray, "%d", dumyCurrent[i]);
+    CONSOLE(carray);
+    CONSOLE(",");
+   }}
+    while((USART1->SR & 0x20) == 0);// wait till RXNE is 1 c recived
+  uint8_t v =USART1 ->DR;
+  if(v==0x76){
+   for(int i=0;i<1000;i++){
+    
+    
+    sprintf(carray, "%d", dumyVoltage[i]);
+    
+    CONSOLE(carray);
+    CONSOLE(",");
+  }
+  }
+  
+  
+  
+  cState=idle;
+}
+
+
+
+
 int main()
 {
   char arr5=rx_buff[0][1];
@@ -34,13 +108,17 @@ int main()
 //    GSMUart4Init();
 ////==============INITIALIZE-TIMER-7==============//   
     TIM7_Configuration();
+   // CONSOLE("HELLO,");
 ////==============INITIALIZE-ADC==============//      
     //Init_ADC_Int();
-    TM_ADC_Init(ADC1,ADC_Channel_1);
-    TM_ADC_Init(ADC1,ADC_Channel_2);
+    TM_ADC_Init(ADC1,ADC_Channel_7);
+    TM_ADC_Init(ADC3,ADC_Channel_2);
     
     
-    
+    for(int i=0;i<1000;i++){
+       c1=TM_ADC_Read(ADC1,ADC_Channel_7);
+  current[i]=TM_ADC_Read(ADC1,ADC_Channel_7);
+    }
     
     
     
@@ -56,71 +134,59 @@ int main()
    //TIM2_Configuration();
    // tm_ADC_Init();
     //GpsAlgoTest();
-float32_t sine1 = 0;
-char arr[10]={'1','2',' 3','4' ,'5' ,'6' ,'7','8','9','10' };
+
  
  
   //CONSOLE(arr);
-  
- uint16_t arr2[10]={1,2,3,4,5,6,7,8,9,10};
+   
+ //uint16_t arr2[10]={1,2,3,4,5,6,7,8,9,10};
   //cPutDigits(154);
   
  // putbuff(0,&arr[0],10);
   
-  float myFloat = 3.14159;
-  char floatStr[20];
-  sprintf(floatStr, "%.2f", myFloat);
+  //float myFloat = 3.14159;
+  //char floatStr[20];
+ // sprintf(floatStr, "%.2f", myFloat);
 //  CONSOLE(floatStr);
-  float arr3[10]={1.1,2.2,2.3,2.5,2.6,2.7,2.8,2.9,2.10,2.11};
+ // float arr3[10]={1.1,2.2,2.3,2.5,2.6,2.7,2.8,2.9,2.10,2.11};
   
  // char arr4[20];
   
-  for(int i=0;i<10;i++){
-    char floatst[10];
+ // for(int i=0;i<1000;i++){
     
-    sprintf(floatst, "%.2f", arr3[i]);
-   
-   // CONSOLE(floatst);
+    
+   // sprintf(carray, "%d", current[i]);
+    
+  //  CONSOLE(carray);
    // CONSOLE(",");
-  }
+ // }
   
-//  putbuff(0,&arr4[0],10);
+ // char c=getch();
   
-   NVIC_EnableIRQ(USART3_IRQn);
-    CONSOLE("HELLOo,");
-    bool check=true;
+  
 while(1)
 {
   
-  c1=TM_ADC_Read(ADC1,ADC_Channel_1);
-  c2=TM_ADC_Read(ADC1,ADC_Channel_2);
-  
-  
-  
-  
-  
-  //getbuff(0,&awien,1);
-    //awien=CheckRx();
-    //if((USART3->DR==0x00000068) & (check==true)){
-      // a++;
-       //CONSOLE(",");
-      // CONSOLE("a,B,");
-      //  check=false;
-     //  USART3->DR=0;
-    
-    //}
-
-  
-
-//state machine
-  //Delayus(1000);
- //CONSOLE("h");
- 
+  switch(cState){
+    case idle:
+      waitingToStart();
+      break;
+   case irradiance:
+      irradiance1000();
+      break;
+   case sensors:
+      readingSensorData();
+      break;
+  case uart:
+      sendingSensorData();
+      break;
+  }
  
 }         
 
   return 0;
 }
+
 
 
 
