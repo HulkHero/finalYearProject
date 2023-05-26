@@ -36,7 +36,6 @@ export default function PtcTable() {
               <TableCell align="center">90</TableCell>
              
             </TableRow>
-        
         </TableBody>
       </Table>
     </TableContainer>
